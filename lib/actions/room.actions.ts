@@ -46,9 +46,9 @@ export const getDocument = async ( {roomId,userId}:{ roomId:string,userId:string
 
         const room =  await liveblocks.getRoom(roomId);
 
-        const hasAccess = Object.keys(room).includes(userId);
+        // const hasAccess = Object.keys(room).includes(userId);
 
-        if(!hasAccess) return new Error('The user has no access to the document')
+        // if(!hasAccess) return new Error('The user has no access to the document')
 
             
         return parseStringify(room);

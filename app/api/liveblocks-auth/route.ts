@@ -1,34 +1,43 @@
-import { currentUser } from "@clerk/nextjs/server";
-import { liveblocks } from "@/lib/liveblocks"
-import { redirect } from "next/navigation";
+import { liveblocks } from "@/lib/liveblocks";
 import { getUserColor } from "@/lib/utils";
-
+import { currentUser } from "@clerk/nextjs/server";
+import { redirect } from "next/navigation";
 
 export async function POST(request: Request) {
 
-    const clerkUser = await currentUser();
-  // Get the current user from your database
-    if(!clerkUser) redirect('/sign-up')
+  const clerkUser = await currentUser();
 
-   const { id,firstName,lastName,emailAddresses,imageUrl  } = clerkUser
-    const user = {
+  console.log(clerkUser)
+
+  if(!clerkUser) {
+    return new Response(JSON.stringify({ error: "Unauthorized" }), {
+      status: 401,
+      headers: { "Content-Type": "application/json" },
+    });
+  }
+    
+
+  const { id, firstName, lastName, emailAddresses, imageUrl } = clerkUser;
+
+  // Get the current user from your database
+  const user = {
     id,
-    metadata:{
+    info: {
       id,
-      name:`${firstName} ${lastName}` || "",
-      email:emailAddresses[0].emailAddress,
-      avatar:imageUrl,
-      color:getUserColor(id)
+      name: `${firstName} ${lastName}`,
+      email: emailAddresses[0].emailAddress,
+      avatar: imageUrl,
+      color: getUserColor(id),
     }
   }
 
-  // Start an auth session inside your endpoint
+  // Identify the user and return the result
   const { status, body } = await liveblocks.identifyUser(
     {
-      userId: user.metadata.email,
-      groupIds:[], // Optional
+      userId: user.info.email,
+      groupIds: [],
     },
-    { userInfo: user.metadata },
+    { userInfo: user.info },
   );
 
   return new Response(body, { status });

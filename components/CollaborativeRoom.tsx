@@ -13,10 +13,10 @@ import {
 import Loader from './Loader'
 import ActiveCollaborators from './ActiveCollaborators'
 
-const CollaborativeRoom = () => {
+const CollaborativeRoom = ( { roomId,roomMetadata} : CollaborativeRoomProps  ) => {
   return (
     <div>
-        <RoomProvider id="my-room">
+        <RoomProvider id={roomId}>
         <ClientSideSuspense fallback={<Loader/>}>
           
         <Header>
