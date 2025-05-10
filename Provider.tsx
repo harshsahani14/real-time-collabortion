@@ -6,11 +6,19 @@ import {
     ClientSideSuspense,
   } from "@liveblocks/react";
 import Loader from './components/Loader';
+import { clerkUsers } from './lib/actions/user.actions';
 
 
 const Provider = ( { children }: { children: ReactNode } ) => {
   return (
-    <LiveblocksProvider authEndpoint={'/api/liveblocks-auth'}>
+    <LiveblocksProvider
+    resolveUsers={ ({userIds})=>{
+
+      const users = clerkUsers({userIds});
+
+      return users;
+    }}
+    authEndpoint={'/api/liveblocks-auth'}>
       <ClientSideSuspense fallback={<Loader/>}>
         {children}
       </ClientSideSuspense>
