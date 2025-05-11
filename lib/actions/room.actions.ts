@@ -40,7 +40,7 @@ export const createDocument = async ( {userId,email}:CreateDocumentParams)=>{
 
 } 
 
-export const getDocument = async ( {roomId,userId}:{ roomId:string,userId:string} )=>{
+export const getDocument = async ( {roomId,userId}:{ roomId:string;userId:string} )=>{
 
     try{
 

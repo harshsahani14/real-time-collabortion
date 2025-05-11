@@ -15,8 +15,8 @@ const Document = async ( {params:{id}}:SearchParamProps ) => {
     userId:clerkUser.emailAddresses[0].emailAddress
   })
 
-  console.log(room)
   if(!room) redirect('/');
+  
 
   return (
     <main className="">
